@@ -22,10 +22,10 @@ document.getElementById('pdfForm').onsubmit = function(event) {
                 let updateText = part.value.replace(/\n/g, '<br/>');
                 const span = document.createElement('span');
                 if (part.added) {
-                    span.className = `added show_${0+i}`;
+                    span.className = `added show_${i}`;
                     span.innerHTML = updateText;
                } else if (part.removed) {
-                    span.className = `removed show_${1+i}`;
+                    span.className = `removed shows_${i}`;
                     span.innerHTML = updateText;  
                 } else {
                     span.className = 'unchanged';
@@ -48,29 +48,21 @@ document.getElementById('pdfForm').onsubmit = function(event) {
 comparisonResult1.addEventListener('click', function(event) {
     if (event.target.classList.contains('added') || event.target.classList.contains('removed')) {
         const className = event.target.classList[1];
-        let Pdf1Text = document.getElementById('Pdf1Text');
-        let targetSpan = Pdf1Text.getElementsByClassName(className); // Select the first span inside Pdf1Text
-
-        if (Pdf1Text && className) { // Ensure Pdf1Text and className exist
-            if (Pdf1Text.classList.contains(className)) {
-                if (targetSpan) { // Check if targetSpan exists
-                    targetSpan.classList.add('clicked'); // Add 'clicked' class to the span
-                    console.log('Added "clicked" class to the span inside Pdf1Text');
-                } else {
-                    console.error('No span found inside Pdf1Text');
-                }
-            } else {
-                console.log(`Pdf1Text does not contain the class: ${className}`);
-            }
-        } else {
-            console.error('Pdf1Text element or className is missing');
-        }
-
+        let targetSpan = document.querySelector(`#Pdf1Text .${className}`);
+        targetSpan.classList.add("clicked")
+        scrollToShowClass(targetSpan);
     }
 });
 comparisonResult2.addEventListener('click', function(event) {
     if (event.target.classList.contains('added') || event.target.classList.contains('removed')) {
         const className = event.target.classList[1];
-        console.log('Class name:', className);
+        let targetSpan = document.querySelector(`#Pdf2Text .${className}`);
+        targetSpan.classList.add("clicked")
+        scrollToShowClass(targetSpan);
     }
 });
+
+
+function scrollToShowClass(elementSpan) {
+    elementSpan.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}

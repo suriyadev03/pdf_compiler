@@ -40,7 +40,10 @@
     display:none;
 }
 #Pdf1Text .clicked{
-    background-color: greenyellow;
+    background-color: greenyellow !important;
+}
+#Pdf2Text .clicked{
+    background-color: greenyellow !important;
 }
 #Pdf1Text .removed{
     color: black;
