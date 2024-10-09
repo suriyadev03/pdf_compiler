@@ -1,13 +1,15 @@
-.added { color: green;     
+#comparisonResult2 .added { color: green;     
     text-decoration: underline;
     font-weight: bold;
     background-color: #00ff0842;
+    cursor: pointer;
 }
-.removed {     
+#comparisonResult1 .removed {     
     color: red;
     text-decoration: underline;
     font-weight: bold;
     background-color: #ff000029; 
+    cursor: pointer;
 }
 .unchanged { color: black; }
 #comparisonResult1{
@@ -36,6 +38,9 @@
 }
 #Pdf1Text .added{
     display:none;
+}
+#Pdf1Text .clicked{
+    background-color: greenyellow;
 }
 #Pdf1Text .removed{
     color: black;

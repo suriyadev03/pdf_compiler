@@ -33,53 +33,6 @@
     </div>
     
 </div>
-
-
-<script>
-    document.getElementById('pdfForm').onsubmit = function(event) {
-        event.preventDefault();
-        const formData = new FormData(this);
-        
-        fetch('/upload', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                document.getElementById('result').innerText = data.error;
-            } else {
-                const diff1 = Diff.diffWords(data.text1, data.text2);
-                // Display the differences in the comparisonResult1 div
-                let resultHTML1 = '';
-                let resultHTML2 = '';
-                diff1.forEach((part,i) => {
-                    console.log("i",i)
-                    let updateText = part.value.replace(/\n/g, '<br/>');
-                    const span = document.createElement('span');
-                    if (part.added) {
-                        span.className = 'added';
-                        span.innerHTML = updateText;
-                   } else if (part.removed) {
-                        span.className = 'removed';
-                        span.innerHTML = updateText;  // Use innerHTML for line breaks
-                    } else {
-                        span.className = 'unchanged';
-                        span.innerHTML = updateText;  // Use innerHTML for line breaks
-                    }
-                    resultHTML1 += span.outerHTML;
-                });
-                
-                document.getElementById('comparisonResult1').innerHTML = resultHTML1;
-                document.getElementById('comparisonResult2').innerHTML = resultHTML1;
-                document.getElementById('Pdf1Text').innerHTML = resultHTML1;
-                document.getElementById('Pdf2Text').innerHTML = resultHTML1;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    };
-</script> <!-- Link to the JavaScript file -->
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 </html>
