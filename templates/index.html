@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Comparison</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/7.0.0/diff.min.js" integrity="sha512-immo//J6lKoR+nRIFDPxoxfL2nd/0N3w8l4LwH4HSSVovtUjab5kbh4AhixLH5z9mIv37llY9Q2i8AfEDXyYjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+        
+</head>
+<body>
+
+<h2>Compare PDF:</h2>
+<form id="pdfForm" enctype="multipart/form-data">
+    <input type="file" id="pdfInput1" name="pdf1" accept=".pdf" required>
+    <input type="file" id="pdfInput2" name="pdf2" accept=".pdf" required>
+    <button type="submit">Upload and Compare</button>
+</form>
+
+<h3>Comparison Result:</h3>
+<div style="display:flex;" class='result'>
+    <div id="comparisonResult1"></div>
+    <div id="comparisonResult2"></div>
+</div>
+<div style="display:flex;" class="showPdfText">
+    <div>
+        <h3>PDF 1:</h3>
+        <div id="Pdf1Text"></div>
+    </div>
+    <div>
+        <h3>PDF 2:</h3>
+        <div id="Pdf2Text"></div>
+    </div>
+    
+</div>
+
+
+<script>
+    document.getElementById('pdfForm').onsubmit = function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        
+        fetch('/upload', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('result').innerText = data.error;
+            } else {
+                const diff1 = Diff.diffWords(data.text1, data.text2);
+                // Display the differences in the comparisonResult1 div
+                let resultHTML1 = '';
+                let resultHTML2 = '';
+                diff1.forEach((part,i) => {
+                    console.log("i",i)
+                    let updateText = part.value.replace(/\n/g, '<br/>');
+                    const span = document.createElement('span');
+                    if (part.added) {
+                        span.className = 'added';
+                        span.innerHTML = updateText;
+                   } else if (part.removed) {
+                        span.className = 'removed';
+                        span.innerHTML = updateText;  // Use innerHTML for line breaks
+                    } else {
+                        span.className = 'unchanged';
+                        span.innerHTML = updateText;  // Use innerHTML for line breaks
+                    }
+                    resultHTML1 += span.outerHTML;
+                });
+                
+                document.getElementById('comparisonResult1').innerHTML = resultHTML1;
+                document.getElementById('comparisonResult2').innerHTML = resultHTML1;
+                document.getElementById('Pdf1Text').innerHTML = resultHTML1;
+                document.getElementById('Pdf2Text').innerHTML = resultHTML1;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    };
+</script> <!-- Link to the JavaScript file -->
+</body>
+</html>

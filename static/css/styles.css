@@ -1,0 +1,61 @@
+.added { color: green;     
+    text-decoration: underline;
+    font-weight: bold;
+    background-color: #00ff0842;
+}
+.removed {     
+    color: red;
+    text-decoration: underline;
+    font-weight: bold;
+    background-color: #ff000029; 
+}
+.unchanged { color: black; }
+#comparisonResult1{
+    background-color:#f53d3d21;
+    height: 25vh;
+    overflow-y: scroll;
+    padding: 10px;
+}
+#comparisonResult2{
+    background-color:#02f33c21;
+    height: 25vh;
+    overflow-y: scroll;
+    padding: 10px;
+
+}
+#comparisonResult1 .added{
+    display:none;
+}
+#comparisonResult2 .removed{
+    display:none;
+}
+#Pdf1Text,#Pdf2Text{
+    height: 35vh;
+    overflow-y: scroll;
+    padding: 10px;
+}
+#Pdf1Text .added{
+    display:none;
+}
+#Pdf1Text .removed{
+    color: black;
+    background-color:transparent;
+    text-decoration: none;
+    font-weight:100;
+}
+#Pdf2Text .removed{
+    display:none;
+}
+#Pdf2Text .added{
+    color: black;
+    background-color:transparent;
+    text-decoration: none;
+    font-weight:100;
+}
+.showPdfText,.result{
+    width: 100%;
+
+}
+.showPdfText>div,.result>div{
+    width: 50%;
+}
