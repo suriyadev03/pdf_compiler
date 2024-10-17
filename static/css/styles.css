@@ -1,8 +1,18 @@
+body{
+    background-color: #f3f4f6;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
 #comparisonResult2 .added { color: green;     
     text-decoration: underline;
     font-weight: bold;
     background-color: #00ff0842;
     cursor: pointer;
+}
+#comparisonResult1 .added { color: green;     
+    visibility: hidden;
 }
 #comparisonResult1 .removed {     
     color: red;
@@ -11,59 +21,239 @@
     background-color: #ff000029; 
     cursor: pointer;
 }
+#comparisonResult2 .removed {     
+    color: red;
+    text-decoration: underline;
+    font-weight: bold;
+    background-color: #ff000029; 
+    cursor: pointer;
+}
 .unchanged { color: black; }
 #comparisonResult1{
-    background-color:#f53d3d21;
-    height: 25vh;
-    overflow-y: scroll;
-    padding: 10px;
+    height: 100%;
+    width: 45%;
+    /* margin-left: 5%; */
+    /* padding: 10px;
+    box-shadow: 0px 10px 18px 0px rgba(0,0,0,0.1); */
 }
 #comparisonResult2{
-    background-color:#02f33c21;
-    height: 25vh;
-    overflow-y: scroll;
-    padding: 10px;
+    height: auto;
+    width: 45%;
+    /* margin-left: 5%; */
+    /* padding: 10px;
+    border-left: 1px solid;
+    scrollbar-width: none;
+    box-shadow: 0px 10px 18px 0px rgba(0,0,0,0.1); */
+}
 
-}
-#comparisonResult1 .added{
-    display:none;
-}
-#comparisonResult2 .removed{
-    display:none;
-}
 #Pdf1Text,#Pdf2Text{
     height: 35vh;
     overflow-y: scroll;
     padding: 10px;
+    border: 2px solid;
+    border-radius: 15px;
 }
-#Pdf1Text .added{
-    display:none;
-}
+
 #Pdf1Text .clicked{
     background-color: greenyellow !important;
+    font-weight: bold;
 }
 #Pdf2Text .clicked{
     background-color: greenyellow !important;
+    font-weight: bold;
 }
-#Pdf1Text .removed{
-    color: black;
-    background-color:transparent;
-    text-decoration: none;
-    font-weight:100;
-}
-#Pdf2Text .removed{
-    display:none;
-}
-#Pdf2Text .added{
-    color: black;
-    background-color:transparent;
-    text-decoration: none;
-    font-weight:100;
-}
+
 .showPdfText,.result{
     width: 100%;
-
+    display: flex;
 }
-.showPdfText>div,.result>div{
-    width: 50%;
+.showPdfText>div{
+    width: 46%;
 }
+.showPdfText>div>div{
+    width: 97%;
+}
+#changes{
+    width: 26%;
+    height: 80vh;
+    border: 1px solid;
+    overflow-y: scroll;
+    padding-left: 5px;
+    padding-right: 5px;
+    min-height: 75vh;
+    border-radius: 5px;
+    margin-left: 2%;
+}
+.showPdfText{
+    display: none;
+}
+#changes>div{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0px 0px 18px 0px rgba(0,0,0,0.1);
+    border: 0.5px solid gray;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+#changes>div:hover{
+    border: 2px solid #00b2ff;
+    cursor: pointer;
+}
+#changes>div>span:nth-child(1){
+    text-decoration: underline;
+}
+#changes>div>span:nth-child(2){
+    color: red;
+    background-color: #ff000029;
+}
+#changes>div>span:nth-child(3){
+    color: green;     
+    background-color: #00ff0842;
+}
+.resultSection{
+    display: flex;
+    overflow-y: scroll;
+    width: 70%;
+    /* border: 1px solid; */
+    height: 80vh;
+    justify-content: space-around;
+}
+#comparisonResult2 .removedWord{
+    visibility: hidden;
+}
+#comparisonResult2 .replacedText{
+    display: none;
+}
+#comparisonResult1 .addedText{
+    display: none;
+}
+.resultSection>div>div{
+    box-shadow: 0px 10px 18px 0px rgba(0,0,0,0.1);
+    border: 0.2px solid gray;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    min-height: 75vh;
+}
+.highlight{
+    border: 2px solid #00b2ff;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 5px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #00b3ff67; 
+    border-radius: 5px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00b3ff67; 
+  }
+  input[type="file"] {
+    outline: none;
+    padding: 4px;
+    margin: -4px;
+  }
+  
+  input[type="file"]:focus-within::file-selector-button,
+  input[type="file"]:focus::file-selector-button {
+    outline: 2px solid #0964b0;
+    outline-offset: 2px;
+  }
+  
+  input[type="file"]::before {
+    top: 16px;
+  }
+  
+  input[type="file"]::after {
+    top: 14px;
+  }
+  
+  /* ------- From Step 2 ------- */
+  
+  input[type="file"] {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  input[type="file"]::file-selector-button {
+    width: 136px;
+    color: transparent;
+  }
+  
+  /* Faked label styles and icon */
+  input[type="file"]::before {
+    position: absolute;
+    pointer-events: none;
+    /*   top: 11px; */
+    left: 40px;
+    color: #0964b0;
+    content: "Upload File";
+  }
+  
+  input[type="file"]::after {
+    position: absolute;
+    pointer-events: none;
+    /*   top: 10px; */
+    left: 16px;
+    height: 20px;
+    width: 20px;
+    content: "";
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230964B0'%3E%3Cpath d='M18 15v3H6v-3H4v3c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-3h-2zM7 9l1.41 1.41L11 7.83V16h2V7.83l2.59 2.58L17 9l-5-5-5 5z'/%3E%3C/svg%3E");
+  }
+  
+  /* ------- From Step 1 ------- */
+  
+  /* file upload button */
+  input[type="file"]::file-selector-button {
+    border-radius: 4px;
+    padding: 0 16px;
+    height: 40px;
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+    margin-right: 16px;
+    transition: background-color 200ms;
+  }
+  
+  /* file upload button hover state */
+  input[type="file"]::file-selector-button:hover {
+    background-color: #f3f4f6;
+  }
+  
+  /* file upload button active state */
+  input[type="file"]::file-selector-button:active {
+    background-color: #e5e7eb;
+  }
+  #pdfInput2{
+    margin-left: 30px;
+  }
+  form{
+    padding: 20px;
+  }
+  form span{
+    font-size: 22px;
+    font-weight: bold;
+  }
+  form button{
+    margin-left: 30px;
+    height: 40px;
+    color: #0964b0;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+  }

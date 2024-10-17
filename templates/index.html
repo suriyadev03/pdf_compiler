@@ -10,19 +10,31 @@
 </head>
 <body>
 
-<h2>Compare PDF:</h2>
+
 <form id="pdfForm" enctype="multipart/form-data">
+    <span>Compare PDF:</span>
+    <br/>
     <input type="file" id="pdfInput1" name="pdf1" accept=".pdf" required>
     <input type="file" id="pdfInput2" name="pdf2" accept=".pdf" required>
     <button type="submit">Upload and Compare</button>
+    <br/>
+    <span>Comparison Result:</span>
 </form>
 
-<h3>Comparison Result:</h3>
-<div style="display:flex;" class='result'>
-    <div id="comparisonResult1"></div>
-    <div id="comparisonResult2"></div>
+
+<div class='result'>
+    <div class='resultSection'>
+        <div id="comparisonResult1">
+            <div id="resultPdf1"></div>
+        </div>
+        <div id="comparisonResult2">
+            <div id="resultPdf2"></div>
+        </div>
+    </div>
+    <div id="changes">
+    </div>
 </div>
-<div style="display:flex;" class="showPdfText">
+<div class="showPdfText">
     <div>
         <h3>PDF 1:</h3>
         <div id="Pdf1Text"></div>
