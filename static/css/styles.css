@@ -197,7 +197,6 @@ body{
   input[type="file"]::before {
     position: absolute;
     pointer-events: none;
-    /*   top: 11px; */
     left: 40px;
     color: #0964b0;
     content: "Upload File";
@@ -206,7 +205,6 @@ body{
   input[type="file"]::after {
     position: absolute;
     pointer-events: none;
-    /*   top: 10px; */
     left: 16px;
     height: 20px;
     width: 20px;
@@ -256,4 +254,9 @@ body{
     border: 1px solid rgba(0, 0, 0, 0.16);
     box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
     cursor: pointer;
+    border-radius: 4px;
+  }
+  form button:active{
+    border: 2px solid #0964b0;
+    
   }
