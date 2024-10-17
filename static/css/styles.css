@@ -137,7 +137,7 @@ body{
     min-height: 75vh;
 }
 .highlight{
-    border: 2px solid #00b2ff;
+  background-color: #fff00bc4 !important;
 }
 /* width */
 ::-webkit-scrollbar {

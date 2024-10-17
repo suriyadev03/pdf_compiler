@@ -2,8 +2,6 @@ let comparisonResult1 = document.getElementById('comparisonResult1')
 let comparisonResult2 = document.getElementById('comparisonResult2')
 let resultPdf1 = document.getElementById('resultPdf1')
 let resultPdf2 = document.getElementById('resultPdf2')
-let Pdf1Text = document.getElementById('Pdf1Text')
-let Pdf2Text = document.getElementById('Pdf2Text')
 let changes = document.getElementById('changes')
 let allChanges = []
 
@@ -57,14 +55,13 @@ document.getElementById('pdfForm').onsubmit = function (event) {
                                 replaceAdd = true;
                             }
                         }
-                    
                         allChanges.push(words);
                     }
                     if (part.removed) {
                         span.className = `removed shows_${i} ${removedWord ? 'removedWord':""} ${replaceText ? 'replacedText':""}`;
                         span.innerHTML = updateText;
                     } else if (part.added) {
-                        span.className = `added show_${i} ${replaceAdd ? 'addedText':""}` ;
+                        span.className = `added shows_${i} ${replaceAdd ? 'addedText':""}` ;
                         span.innerHTML = updateText;
                     } else {
                         span.className = '';
@@ -73,11 +70,7 @@ document.getElementById('pdfForm').onsubmit = function (event) {
                     resultHTML += span.outerHTML;
                 });                
                 resultPdf1.innerHTML = `<div>${resultHTML}</div`;
-                resultPdf2.innerHTML = `<div>${resultHTML}</div`;
-                Pdf1Text.innerHTML = resultHTML;
-                Pdf2Text.innerHTML = resultHTML;
-                console.log("allChanges",allChanges);
-                
+                resultPdf2.innerHTML = `<div>${resultHTML}</div`;                
                 showAllChanges()
             }
         })
@@ -86,10 +79,10 @@ document.getElementById('pdfForm').onsubmit = function (event) {
         });
 };
 const showAllChanges = () => {
-    let allContent = ''; // Build all HTML at once
+    let allContent = '';
     allChanges.forEach((data, i) => {
         const mainChanges = `
-            <div id="${data.title === "Added" ? data.pdf2 : ""}" class="${data.title !== "Added" ? data.pdf1 : ""}">
+            <div id="${data.title === "Added" ? data.pdf2 : ""}" class="${data.title !== "Added" ? data.pdf1+" "+data.pdf2  : data.title === "Removed" ? "removed" : ""}">
                 <span><b>${data.title}</b></span>
                 <span>${data.removed || ''}</span>
                 <span>${data.added || ''}</span>
@@ -98,24 +91,34 @@ const showAllChanges = () => {
             allContent += mainChanges;
         }
     });
-    changes.innerHTML = allContent; // Update DOM once
+    changes.innerHTML = allContent;
 }
 
 changes.addEventListener('click', function(event) {
-    debugger
+    document.querySelectorAll('.result .highlight').forEach((element) => {
+        element.classList.remove('highlight');
+    });
     const childDivClassName = event.target.closest('div[class^="shows_"]');
+    debugger
+    const childDivRemove = event.target.classList.contains('removed');
     const childDivId = event.target.closest('div[id^="shows_"]');
-    if (childDivClassName) {
-        const childClass = childDivClassName.className;
-        let targetSpan = document.querySelector(`#comparisonResult1 .${childClass}`);
-        let targetSpan2 = document.querySelector(`#comparisonResult2 .${childClass}`);
+    if(childDivRemove){
+        console.log("childClass",childClass);
+        let targetSpan = document.querySelector(`#comparisonResult1 .${childClass[0]}`);
         targetSpan.classList.add('highlight');
-        targetSpan2.classList.add('highlight');
-        scrollToShowClass(targetSpan, targetSpan2);
-        console.log('Clicked child div class name:', childClass);
+        scrollToShowClass2(targetSpan);
+    }
+    if (childDivClassName) {
+        const childClass = childDivClassName.classList;
+            let targetSpan = document.querySelector(`#comparisonResult1 .${childClass[0]}`);
+            let targetSpan2 = document.querySelector(`#comparisonResult2 .${childClass[1]}`);
+            targetSpan.classList.add('highlight');
+            targetSpan2.classList.add('highlight');
+            scrollToShowClass(targetSpan, targetSpan2);
     }else if (childDivId) {
         const childClass = childDivId.id;
-        let targetSpan = document.querySelector(`#comparisonResult1 .${childClass}`);
+        let targetSpan = document.querySelector(`#comparisonResult2 .${childClass}`);
+        targetSpan.classList.add('highlight');
         scrollToShowClass2(targetSpan);
     }
 });
