@@ -1,12 +1,125 @@
-let comparisonResult1 = document.getElementById('comparisonResult1')
-let comparisonResult2 = document.getElementById('comparisonResult2')
-let resultPdf1 = document.getElementById('resultPdf1')
-let resultPdf2 = document.getElementById('resultPdf2')
-let changes = document.getElementById('changes')
-let allChanges = []
+let headerTitle = document.getElementById('headerTitle')
+let filesSelectionPage = document.getElementById('filesSelectionPage')
+let resultPage = document.getElementById('resultPage')
 
+let pdfInputOld = document.getElementById('old-pdf-selector');
+let pdfInputNew = document.getElementById('new-pdf-selector');
+let canvasOld = document.getElementById('pdf-canvas-old');
+let canvasNew = document.getElementById('pdf-canvas-new');
+let canvasOldContext = canvasOld.getContext('2d');
+let canvasNewContext = canvasNew.getContext('2d');
+
+let resultPdfOld = document.getElementById('old-pdf-result')
+let resultPdfNew = document.getElementById('new-pdf-result')
+
+let oldPdfNameElements = document.querySelectorAll('.old-pdf-name')
+let newPdfNameElements = document.querySelectorAll('.new-pdf-name')
+
+let removeOldPdfButton = document.querySelector('#remove-old-pdf')
+let removeNewPdfButton = document.querySelector('#remove-new-pdf')
+
+let changesContainer = document.getElementById('changes')
+let selectNewFiles = document.getElementById('select-another-file')
+let changeRecords = []
+let isOldFileSelected = false;
+let isNewFileSelected = false;
+
+removeOldPdfButton.addEventListener("click", function() {
+    canvasOldContext.clearRect(0, 0, canvasOld.width, canvasOld.height)
+    removeOldPdfButton.style.display = "none"
+    oldPdfNameElements.forEach((elem)=>{
+        elem.innerHTML = "No file chosen";
+    })
+    pdfInputOld.file = ""
+    isOldFileSelected = false;
+});
+
+removeNewPdfButton.addEventListener("click", function() {
+    canvasNewContext.clearRect(0, 0, canvasNew.width, canvasNew.height)
+    removeNewPdfButton.style.display = "none"
+    newPdfNameElements.forEach((elem)=>{
+        elem.innerHTML = "No file chosen";
+    })
+    pdfInputNew.file = ""
+    isNewFileSelected = false;
+});
+
+canvasOld.addEventListener("click", function() {
+    pdfInputOld.click(); // Trigger file input click
+});
+
+canvasNew.addEventListener("click", function() {
+    pdfInputNew.click(); // Trigger file input click
+});
+
+pdfInputOld.addEventListener('change', (e) => {
+    const file = pdfInputOld.files[0];
+    handleFileSelection(file,e.target.id)
+    isOldFileSelected = true;
+});
+pdfInputNew.addEventListener('change', (e) => {
+    const file = pdfInputNew.files[0];
+    handleFileSelection(file,e.target.id)
+    isNewFileSelected = true;
+});
+selectNewFiles.addEventListener("click", function() {
+    filesSelectionPage.style.display = "flex"
+    resultPage.style.display = "none"
+    headerTitle.innerHTML = "Compare Files"
+});
+const handleFileSelection = (file,id) => {
+    if (file && file.type === 'application/pdf') {
+        const removePdf = id == "old-pdf-selector" ? removeOldPdfButton : removeNewPdfButton
+        removePdf.style.display = "block"
+        const fileReader = new FileReader();
+        fileReader.onload = function(e) {
+            const pdfData = new Uint8Array(e.target.result);
+            // Loading the PDF document
+            const loadingTask = pdfjsLib.getDocument({ data: pdfData });
+            
+            loadingTask.promise.then(pdf => {
+                console.log('PDF loaded');
+
+                // Fetching the first page
+                pdf.getPage(1).then(page => {
+                    console.log('Page loaded');
+
+                    const scale = 1.5; // Adjust scale for size
+                    const viewport = page.getViewport({ scale: scale });
+
+                    const canvasSelect = id == "old-pdf-selector" ? canvasOld : canvasNew
+                    // Prepare canvas using PDF page dimensions
+                    canvasSelect.height = viewport.height;
+                    canvasSelect.width = viewport.width;
+
+                    const renderContext = {
+                        canvasContext: id == "old-pdf-selector" ? canvasOldContext : canvasNewContext,
+                        viewport: viewport
+                    };
+                    page.render(renderContext).promise.then(() => {
+                        console.log('Page rendered');
+                    });
+                });
+                const fileNameSelect = id == "old-pdf-selector" ? oldPdfNameElements : newPdfNameElements
+                fileNameSelect.forEach((elem)=>{
+                    elem.innerHTML = file.name;
+                })
+            }, reason => {
+                // PDF loading error
+                console.error(reason);
+            });
+        };
+
+        fileReader.readAsArrayBuffer(file); // Read the PDF file as an ArrayBuffer
+    } else {
+        alert('Please select a valid PDF file.');
+    }
+}
 document.getElementById('pdfForm').onsubmit = function (event) {
     event.preventDefault();
+    // if(!isOldFileSelected || !isNewFileSelected) return
+    changeRecords = [];
+    changesContainer.innerHTML = '';
     const formData = new FormData(this);
     fetch('/upload', {
         method: 'POST',
@@ -46,7 +159,6 @@ document.getElementById('pdfForm').onsubmit = function (event) {
                             }
                         } else if (part.added) {
                             words.pdf2 = `shows_${i}`;
-                    
                             if (!array[i - 1]?.removed) {
                                 words.title = 'Added';
                                 words.added = updateText;
@@ -55,7 +167,7 @@ document.getElementById('pdfForm').onsubmit = function (event) {
                                 replaceAdd = true;
                             }
                         }
-                        allChanges.push(words);
+                        changeRecords.push(words);
                     }
                     if (part.removed) {
                         span.className = `removed shows_${i} ${removedWord ? 'removedWord':""} ${replaceText ? 'replacedText':""}`;
@@ -69,63 +181,62 @@ document.getElementById('pdfForm').onsubmit = function (event) {
                     }
                     resultHTML += span.outerHTML;
                 });                
-                resultPdf1.innerHTML = `<div>${resultHTML}</div`;
-                resultPdf2.innerHTML = `<div>${resultHTML}</div`;                
-                showAllChanges()
+                resultPdfOld.innerHTML = resultHTML;
+                resultPdfNew.innerHTML = resultHTML; 
+                displayChangeSummary()
+                filesSelectionPage.style.display = "none"
+                resultPage.style.display = "flex"
+                headerTitle.innerHTML = "Comparison Result"
             }
         })
         .catch(error => {
             console.error('Error:', error);
-        });
+        }); 
 };
-const showAllChanges = () => {
-    let allContent = '';
-    allChanges.forEach((data, i) => {
-        const mainChanges = `
-            <div id="${data.title === "Added" ? data.pdf2 : ""}" class="${data.title !== "Added" ? data.pdf1+" "+data.pdf2  : data.title === "Removed" ? "removed" : ""}">
-                <span><b>${data.title}</b></span>
-                <span>${data.removed || ''}</span>
-                <span>${data.added || ''}</span>
+const displayChangeSummary = () => {
+    let changesHTML = '';
+    changeRecords.forEach((record) => {
+        let getRemovedCount = record.removed.split(/\s+/).map(word => word.replace(/[.,!?]/g, '')).filter(word => word.length > 0).length;
+        let getAddedCount = record.added.split(/\s+/).map(word => word.replace(/[.,!?]/g, '')).filter(word => word.length > 0).length;
+        const changeSummary = `
+            <div id="${record.title === "Added" ? "added_"+""+record.pdf2 : "" +""+ record.title === "Removed" ? "removed_"+""+record.pdf1 : ""}" class="${record.title !== "Added" ? record.pdf1+" "+record.pdf2  : record.title === "Removed" ? "removed" : ""}">
+                <span><b>${record.title}</b></span>
+                <span><span>${record.removed || ''}</span><span>${record.removed ? "-"+getRemovedCount : ''}</span></span>
+                <span><span>${record.added || ''}</span><span>${record.added ? "+"+getAddedCount : ''}</span></span>
             </div>`;
-        if (data.title.length) {
-            allContent += mainChanges;
-        }
-    });
-    changes.innerHTML = allContent;
+            if (record.title.length) {
+                changesHTML += changeSummary;
+            }
+        });
+        changesContainer.innerHTML = changesHTML;
 }
 
-changes.addEventListener('click', function(event) {
-    document.querySelectorAll('.result .highlight').forEach((element) => {
-        element.classList.remove('highlight');
-    });
-    const childDivClassName = event.target.closest('div[class^="shows_"]');
-    debugger
-    const childDivRemove = event.target.classList.contains('removed');
-    const childDivId = event.target.closest('div[id^="shows_"]');
-    if(childDivRemove){
-        console.log("childClass",childClass);
-        let targetSpan = document.querySelector(`#comparisonResult1 .${childClass[0]}`);
-        targetSpan.classList.add('highlight');
-        scrollToShowClass2(targetSpan);
+changesContainer.addEventListener('click', function (event) {
+    document.querySelectorAll('#resultPage .highlight').forEach(el => el.classList.remove('highlight'));
+    const targetAdded = event.target.closest('div[id^="added_"]');
+    const targetRemoved = event.target.closest('div[id^="removed_"]');
+    const targetShow = event.target.closest('div[class^="shows_"]');
+
+    let targetOld, targetNew;
+
+    if (targetAdded) {
+        const childClass = targetAdded.id.split('_').slice(1).join('_');
+        targetOld = document.querySelector(`#new-pdf-text .${childClass}`);
+    } else if (targetRemoved) {
+        const childClass = targetRemoved.id.split('_').slice(1).join('_');
+        targetOld = document.querySelector(`#old-pdf-text .${childClass}`);
+    } else if (targetShow) {
+        const childClass = targetShow.classList[0];
+        targetOld = document.querySelector(`#old-pdf-text .${childClass}`);
+        targetNew = document.querySelector(`#new-pdf-text .${targetShow.classList[1]}`);
     }
-    if (childDivClassName) {
-        const childClass = childDivClassName.classList;
-            let targetSpan = document.querySelector(`#comparisonResult1 .${childClass[0]}`);
-            let targetSpan2 = document.querySelector(`#comparisonResult2 .${childClass[1]}`);
-            targetSpan.classList.add('highlight');
-            targetSpan2.classList.add('highlight');
-            scrollToShowClass(targetSpan, targetSpan2);
-    }else if (childDivId) {
-        const childClass = childDivId.id;
-        let targetSpan = document.querySelector(`#comparisonResult2 .${childClass}`);
-        targetSpan.classList.add('highlight');
-        scrollToShowClass2(targetSpan);
-    }
+    // Highlight and scroll if any target spans are found
+    targetOld?.classList.add('highlight');
+    targetNew?.classList.add('highlight');
+    scrollToHighlightedChanges(targetOld, targetNew);
 });
-function scrollToShowClass2(targetSpan) {
-    targetSpan.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-function scrollToShowClass(targetSpan1, targetSpan2) {
-    targetSpan1.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    targetSpan2.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+function scrollToHighlightedChanges(targetOld, targetNew) {
+    targetOld?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    targetNew?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }

@@ -1,262 +1,447 @@
-body{
-    background-color: #f3f4f6;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-#comparisonResult2 .added { color: green;     
-    text-decoration: underline;
-    font-weight: bold;
-    background-color: #00ff0842;
-    cursor: pointer;
-}
-#comparisonResult1 .added { color: green;     
-    visibility: hidden;
-}
-#comparisonResult1 .removed {     
-    color: red;
-    text-decoration: underline;
-    font-weight: bold;
-    background-color: #ff000029; 
-    cursor: pointer;
-}
-#comparisonResult2 .removed {     
-    color: red;
-    text-decoration: underline;
-    font-weight: bold;
-    background-color: #ff000029; 
-    cursor: pointer;
-}
-.unchanged { color: black; }
-#comparisonResult1{
-    height: 100%;
-    width: 45%;
-    /* margin-left: 5%; */
-    /* padding: 10px;
-    box-shadow: 0px 10px 18px 0px rgba(0,0,0,0.1); */
-}
-#comparisonResult2{
-    height: auto;
-    width: 45%;
-    /* margin-left: 5%; */
-    /* padding: 10px;
-    border-left: 1px solid;
-    scrollbar-width: none;
-    box-shadow: 0px 10px 18px 0px rgba(0,0,0,0.1); */
+body {
+  background-color: #f2f2f285;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
 }
 
-#Pdf1Text,#Pdf2Text{
-    height: 35vh;
-    overflow-y: scroll;
-    padding: 10px;
-    border: 2px solid;
-    border-radius: 15px;
+#addFilePage {
+  height: 100vh;
+  width: 100%;
 }
 
-#Pdf1Text .clicked{
-    background-color: greenyellow !important;
-    font-weight: bold;
+header {
+  height: 65px;
+  display: flex;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  justify-content: space-between;
+  align-items: center;
 }
-#Pdf2Text .clicked{
-    background-color: greenyellow !important;
-    font-weight: bold;
+header>div {
+  display: flex;
+  align-items: center;
 }
 
-.showPdfText,.result{
-    width: 100%;
-    display: flex;
+header img {
+  width: 3rem;
+  padding-left: 10px;
+  padding-right: 10px;
 }
-.showPdfText>div{
-    width: 46%;
+header button{
+  height: 60%;
+  width: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  padding-right: 20px;
 }
-.showPdfText>div>div{
-    width: 97%;
+#filesSelectionPage {
+  height: 92vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-#changes{
-    width: 26%;
-    height: 80vh;
-    border: 1px solid;
-    overflow-y: scroll;
-    padding-left: 5px;
-    padding-right: 5px;
-    min-height: 75vh;
-    border-radius: 5px;
-    margin-left: 2%;
+#resultPage{
+  height: 92vh;
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
-.showPdfText{
-    display: none;
+#resultPage>div:nth-child(1){
+  width: 65%;
 }
-#changes>div{
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    box-shadow: 0px 0px 18px 0px rgba(0,0,0,0.1);
-    border: 0.5px solid gray;
-    margin-top: 5px;
-    border-radius: 5px;
+#resultPage>div>div:nth-child(1){
+  height: 8vh;
+  display: flex;
+  align-items: center;
+  font-size: medium;
+  color: #313131b3;
 }
-#changes>div:hover{
-    border: 2px solid #00b2ff;
-    cursor: pointer;
+#resultPage>div>div:nth-child(1)>span:nth-child(1) {
+  width: 47%;
 }
-#changes>div>span:nth-child(1){
-    text-decoration: underline;
+#resultPage>div>div:nth-child(1)>span:nth-child(2) {
+  padding-left: 2.5%;
 }
-#changes>div>span:nth-child(2){
-    color: red;
-    background-color: #ff000029;
+#resultPage>div>div:nth-child(2){
+  height: 80vh;
 }
-#changes>div>span:nth-child(3){
-    color: green;     
-    background-color: #00ff0842;
+.result{
+  width: 25%;
+  margin-left: 1.5%;
+  /* margin-right: 1.5%; */
 }
-.resultSection{
-    display: flex;
-    overflow-y: scroll;
-    width: 70%;
-    /* border: 1px solid; */
-    height: 80vh;
-    justify-content: space-around;
+.result div:nth-child(1){
+  justify-content: space-between;
 }
-#comparisonResult2 .removedWord{
-    visibility: hidden;
+#pdf-canvas-old,
+#pdf-canvas-new {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;  border-radius: 5px;
 }
-#comparisonResult2 .replacedText{
-    display: none;
+
+#filesSelectionPage>form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-#comparisonResult1 .addedText{
-    display: none;
+
+#filesSelectionPage>form>div {
+  display: flex;
 }
-.resultSection>div>div{
-    box-shadow: 0px 10px 18px 0px rgba(0,0,0,0.1);
-    border: 0.2px solid gray;
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 5px;
-    min-height: 75vh;
+
+#filesSelectionPage>form>div>img {
+  height: 3rem;
+  padding-top: 9rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
-.highlight{
+
+.selectPdf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.selectPdf>span:nth-child(1) {
+  font-weight: 600;
+  padding-bottom: 10px;
+  color: #757373;
+}
+
+.pdfName {
+  font-weight: 500;
+  padding-top: 10px;
+  color: #757373;
+}
+
+#new-pdf-text .added {
+  color: green;
+  text-decoration: underline;
+  font-weight: bold;
+  background-color: #00ff0842;
+  cursor: pointer;
+}
+
+#old-pdf-text .added {
+  color: transparent;
+  background-color: #80808042;
+}
+
+#old-pdf-text .removed {
+  color: red;
+  text-decoration: underline;
+  font-weight: bold;
+  background-color: #ff000029;
+  cursor: pointer;
+}
+
+#new-pdf-text .removed {
+  color: red;
+  text-decoration: underline;
+  font-weight: bold;
+  background-color: #ff000029;
+  cursor: pointer;
+}
+
+.unchanged {
+  color: black;
+}
+
+.resultSection>div {
+  height: 100%;
+  width: 47%;
+  margin-right: 3%;
+}
+#Pdf1Text,
+#Pdf2Text {
+  height: 35vh;
+  overflow-y: scroll;
+  padding: 10px;
+}
+
+#Pdf1Text .clicked {
+  background-color: greenyellow !important;
+  font-weight: bold;
+}
+
+#Pdf2Text .clicked {
+  background-color: greenyellow !important;
+  font-weight: bold;
+}
+
+.showPdfText,
+.result {
+  display: flex;
+  flex-direction: column;
+}
+
+.showPdfText>div {
+  width: 46%;
+}
+
+.showPdfText>div>div {
+  width: 97%;
+}
+
+#changes {
+  height: 80vh;
+  overflow-y: scroll;
+  padding-left: 5px;
+  min-height: 75vh;
+  /* margin-right: -0.5%; */
+}
+
+.showPdfText {
+  display: none;
+}
+
+#changes>div {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 2.5px;
+  border-radius: 5px;
+  margin-right: 8%;
+  background-color: #f2f2f24e;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+#changes>div:hover {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  cursor: pointer;
+}
+#changes>div:active {
+  background-color: #f2f2f285;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+}
+
+#changes>div>span:nth-child(1) {
+  text-decoration: underline;
+}
+
+#changes>div>span:nth-child(2) {
+  color: red;
+  background-color: #ff000029;
+  display: flex;
+}
+#changes>div>span>span:nth-child(1) {
+  width: 87%;
+}
+#changes>div>span>span:nth-child(2) {
+  font-size: 13px;
+}
+#changes>div>span:nth-child(3) {
+  color: green;
+  display: flex;
+  background-color: #00ff0842;
+}
+
+.resultSection {
+  display: flex;
+  overflow-y: scroll;
+  height: 80vh;
+  justify-content: space-between;
+  border-radius: 6px;
+}
+
+#new-pdf-text .removedWord {
+  color: transparent;
+  background-color: #80808042;
+}
+
+#new-pdf-text .replacedText {
+  display: none;
+}
+
+#old-pdf-text .addedText {
+  display: none;
+}
+
+#old-pdf-result{
+  background-color: #fff;
+  padding: 15px;
+  min-height: 75vh;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+  border-radius: 0.5rem;
+}
+#new-pdf-result{
+  background-color: #fff;
+  padding: 15px;
+  min-height: 75vh;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+  border-radius: 0.5rem;
+}
+.highlight {
   background-color: #fff00bc4 !important;
 }
-/* width */
+
 ::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey; 
-    border-radius: 5px;
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #00b3ff67; 
-    border-radius: 5px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #00b3ff67; 
-  }
-  input[type="file"] {
-    outline: none;
-    padding: 4px;
-    margin: -4px;
-  }
-  
-  input[type="file"]:focus-within::file-selector-button,
-  input[type="file"]:focus::file-selector-button {
-    outline: 2px solid #0964b0;
-    outline-offset: 2px;
-  }
-  
-  input[type="file"]::before {
-    top: 16px;
-  }
-  
-  input[type="file"]::after {
-    top: 14px;
-  }
-  
-  /* ------- From Step 2 ------- */
-  
-  input[type="file"] {
-    position: relative;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  
-  input[type="file"]::file-selector-button {
-    width: 136px;
-    color: transparent;
-  }
-  
-  /* Faked label styles and icon */
-  input[type="file"]::before {
-    position: absolute;
-    pointer-events: none;
-    left: 40px;
-    color: #0964b0;
-    content: "Upload File";
-  }
-  
-  input[type="file"]::after {
-    position: absolute;
-    pointer-events: none;
-    left: 16px;
-    height: 20px;
-    width: 20px;
-    content: "";
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230964B0'%3E%3Cpath d='M18 15v3H6v-3H4v3c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-3h-2zM7 9l1.41 1.41L11 7.83V16h2V7.83l2.59 2.58L17 9l-5-5-5 5z'/%3E%3C/svg%3E");
-  }
-  
-  /* ------- From Step 1 ------- */
-  
-  /* file upload button */
-  input[type="file"]::file-selector-button {
-    border-radius: 4px;
-    padding: 0 16px;
-    height: 40px;
-    cursor: pointer;
-    background-color: white;
-    border: 1px solid rgba(0, 0, 0, 0.16);
-    box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
-    margin-right: 16px;
-    transition: background-color 200ms;
-  }
-  
-  /* file upload button hover state */
-  input[type="file"]::file-selector-button:hover {
-    background-color: #f3f4f6;
-  }
-  
-  /* file upload button active state */
-  input[type="file"]::file-selector-button:active {
-    background-color: #e5e7eb;
-  }
-  #pdfInput2{
-    margin-left: 30px;
-  }
-  form{
-    padding: 20px;
-  }
-  form span{
-    font-size: 22px;
-    font-weight: bold;
-  }
-  form button{
-    margin-left: 30px;
-    height: 40px;
-    color: #0964b0;
-    background-color: white;
-    border: 1px solid rgba(0, 0, 0, 0.16);
-    box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  form button:active{
-    border: 2px solid #0964b0;
-    
-  }
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(189, 188, 188, 0.491);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(189, 188, 188, 0.47);
+}
+
+input[type="file"] {
+  outline: none;
+  color: transparent;
+  width: 8.5rem;
+  border: .5px solid #0964b0;
+  border-radius: 2rem;
+}
+
+input[type="file"]:focus-within::file-selector-button,
+input[type="file"]:focus::file-selector-button {
+  outline: 2px solid #0964b0;
+  outline-offset: 2px;
+}
+
+input[type="file"]::before {
+  top: 12px;
+}
+
+input[type="file"]::after {
+  top: 9px;
+}
+
+
+input[type="file"] {
+  position: relative;
+  margin-top: 10px;
+}
+
+input[type="file"]::file-selector-button {
+  width: 8.5rem;
+  color: transparent;
+}
+
+input[type="file"]::before {
+  position: absolute;
+  pointer-events: none;
+  left: 40px;
+  color: #0964b0;
+  content: "Upload File";
+}
+
+input[type="file"]::after {
+  position: absolute;
+  pointer-events: none;
+  left: 16px;
+  height: 20px;
+  width: 20px;
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230964B0'%3E%3Cpath d='M18 15v3H6v-3H4v3c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-3h-2zM7 9l1.41 1.41L11 7.83V16h2V7.83l2.59 2.58L17 9l-5-5-5 5z'/%3E%3C/svg%3E");
+}
+
+input[type="file"]::file-selector-button {
+  border-radius: 2rem;
+  padding: 0 16px;
+  height: 40px;
+  cursor: pointer;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+  margin-right: 16px;
+  transition: background-color 200ms;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #f3f4f6;
+}
+
+input[type="file"]::file-selector-button:active {
+  background-color: #e5e7eb;
+  border: 2px solid #0964b0;
+}
+form span {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.selectPdf>.old-pdf-name,.selectPdf>.new-pdf-name{
+  font-size: 12px;
+  margin-top: 10px;
+  font-weight: 400;
+}
+form button {
+  height: 40px;
+  color: white;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  border-radius: 2rem;
+  width: 8.5rem;
+  background: #0964b0;
+  margin-top: 10px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+form button:active,.result button:active {
+  background:white;
+  color: #0964b0;
+  border: 2px solid #0964b0;
+
+}
+.result button{
+  height: 35px;
+  color: white;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  border-radius: 2rem;
+  background: #0964b0;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+.pdf-wrapper{
+  width: 15rem;
+  height: 19.4114rem;
+  position: relative;
+}
+.remove-pdf{
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  background-color: rgb(255, 52, 52);
+  right: 0;
+  top: 0;
+  border-bottom-left-radius: 80px;
+}
+#remove-old-pdf{
+  display: none;
+}
+#remove-new-pdf{
+  display: none;
+}
+.remove-pdf:hover{
+  background-color: red;
+}
+.remove-pdf>i{
+  font-size: 23px;
+  margin-left: 0.8rem;
+  margin-top: 0.2rem;
+}

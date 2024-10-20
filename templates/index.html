@@ -1,40 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Comparison</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/7.0.0/diff.min.js" integrity="sha512-immo//J6lKoR+nRIFDPxoxfL2nd/0N3w8l4LwH4HSSVovtUjab5kbh4AhixLH5z9mIv37llY9Q2i8AfEDXyYjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/7.0.0/diff.min.js"
+        integrity="sha512-immo//J6lKoR+nRIFDPxoxfL2nd/0N3w8l4LwH4HSSVovtUjab5kbh4AhixLH5z9mIv37llY9Q2i8AfEDXyYjw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 </head>
+
 <body>
-
-
-<form id="pdfForm" enctype="multipart/form-data">
-    <span>Compare PDF:</span>
-    <br/>
-    <input type="file" id="pdfInput1" name="pdf1" accept=".pdf" required>
-    <input type="file" id="pdfInput2" name="pdf2" accept=".pdf" required>
-    <button type="submit">Upload and Compare</button>
-    <br/>
-    <span>Comparison Result:</span>
-</form>
-
-
-<div class='result'>
-    <div class='resultSection'>
-        <div id="comparisonResult1">
-            <div id="resultPdf1"></div>
+    <header>
+        <div>
+            <img src="https://cdn-icons-png.flaticon.com/512/3526/3526556.png" alt="icon" />
+            <h3 id="headerTitle">Compare Files</h3>
         </div>
-        <div id="comparisonResult2">
-            <div id="resultPdf2"></div>
+    </header>
+    <div id="filesSelectionPage">
+        <form id="pdfForm" enctype="multipart/form-data">
+            <h2>Select Files to Compare</h2>
+            <div>
+                <div class="selectPdf">
+                    <span>Old PDF</span>
+                    <div class="pdf-wrapper">
+                        <canvas id="pdf-canvas-old"></canvas>
+                        <div id="remove-old-pdf" class="remove-pdf"><i class="fa fa-close"></i></div>
+                    </div>
+                    <span class="old-pdf-name" class="pdfName">No file chosen</span>
+                    <input type="file" id="old-pdf-selector" name="pdf1" accept=".pdf" required>
+                </div>
+                <img src="https://icons.veryicon.com/png/o/business/e-commerce-vector-icon-set/compare-12.png"
+                    alt="icon" />
+                <div class="selectPdf">
+                    <span>New PDF</span>
+                    <div class="pdf-wrapper">
+                    <canvas id="pdf-canvas-new"></canvas>
+                    <div id="remove-new-pdf" class="remove-pdf"><i class="fa fa-close"></i></div>
+                    </div>
+                    <span class="new-pdf-name" class="pdfName">No file chosen</span>
+                    <input type="file" id="new-pdf-selector" name="pdf2" accept=".pdf" required>
+                </div>
+            </div>
+            <button type="submit">Compare</button>
+        </form>
+    </div>
+    <div id="resultPage" style="display:none;">
+        <div>
+            <div>
+                <span class="old-pdf-name" class="pdfName">No file chosen</span>
+                <span class="new-pdf-name" class="pdfName">No file chosen</span>
+            </div>
+            <div class='resultSection'>
+                <div id="old-pdf-text">
+                    <div id="old-pdf-result">
+                    </div>
+                </div>
+                <div id="new-pdf-text">
+                    <div id="new-pdf-result">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='result'>
+            <div><span>Changes :</span><button id="select-another-file">Comapare another files</button></div>
+            <div id="changes">
+            </div>
         </div>
     </div>
-    <div id="changes">
-    </div>
-</div>
 
-<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
+
 </html>
