@@ -74,7 +74,6 @@ header button{
 .result{
   width: 25%;
   margin-left: 1.5%;
-  /* margin-right: 1.5%; */
 }
 .result div:nth-child(1){
   justify-content: space-between;
@@ -87,19 +86,19 @@ header button{
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;  border-radius: 5px;
 }
 
-#filesSelectionPage>form {
+#filesSelectionPage>#pdfForm {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#filesSelectionPage>form>div {
+#filesSelectionPage>#pdfForm>div {
   display: flex;
 }
 
-#filesSelectionPage>form>div>img {
+#filesSelectionPage>#pdfForm>div>img {
   height: 3rem;
-  padding-top: 9rem;
+  padding-top: 11rem;
   padding-left: 1rem;
   padding-right: 1rem;
 }
@@ -151,58 +150,22 @@ header button{
   cursor: pointer;
 }
 
-.unchanged {
-  color: black;
-}
-
 .resultSection>div {
   height: 100%;
   width: 47%;
   margin-right: 3%;
 }
-#Pdf1Text,
-#Pdf2Text {
-  height: 35vh;
-  overflow-y: scroll;
-  padding: 10px;
-}
-
-#Pdf1Text .clicked {
-  background-color: greenyellow !important;
-  font-weight: bold;
-}
-
-#Pdf2Text .clicked {
-  background-color: greenyellow !important;
-  font-weight: bold;
-}
-
-.showPdfText,
 .result {
   display: flex;
   flex-direction: column;
+  font-size: smaller;
 }
-
-.showPdfText>div {
-  width: 46%;
-}
-
-.showPdfText>div>div {
-  width: 97%;
-}
-
 #changes {
   height: 80vh;
   overflow-y: scroll;
   padding-left: 5px;
   min-height: 75vh;
-  /* margin-right: -0.5%; */
 }
-
-.showPdfText {
-  display: none;
-}
-
 #changes>div {
   display: flex;
   flex-direction: column;
@@ -251,6 +214,7 @@ header button{
   height: 80vh;
   justify-content: space-between;
   border-radius: 6px;
+  font-size: smaller;
 }
 
 #new-pdf-text .removedWord {
@@ -258,28 +222,19 @@ header button{
   background-color: #80808042;
 }
 
-#new-pdf-text .replacedText {
+#new-pdf-text .replacedText,#old-pdf-text .addedText {
   display: none;
 }
 
-#old-pdf-text .addedText {
-  display: none;
-}
-
-#old-pdf-result{
+#old-pdf-result,#new-pdf-result{
+  font-size: smaller;
   background-color: #fff;
   padding: 15px;
   min-height: 75vh;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
   border-radius: 0.5rem;
 }
-#new-pdf-result{
-  background-color: #fff;
-  padding: 15px;
-  min-height: 75vh;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
-  border-radius: 0.5rem;
-}
+
 .highlight {
   background-color: #fff00bc4 !important;
 }
@@ -302,58 +257,58 @@ header button{
   background: rgba(189, 188, 188, 0.47);
 }
 
-input[type="file"] {
+.pdf-selector {
   outline: none;
   color: transparent;
   width: 8.5rem;
-  border: .5px solid #0964b0;
+  border: .5px solid #177254;
   border-radius: 2rem;
 }
 
-input[type="file"]:focus-within::file-selector-button,
-input[type="file"]:focus::file-selector-button {
-  outline: 2px solid #0964b0;
+.pdf-selector:focus-within::file-selector-button,
+.pdf-selector:focus::file-selector-button {
+  outline: 2px solid #177254;
   outline-offset: 2px;
 }
 
-input[type="file"]::before {
+.pdf-selector::before {
   top: 12px;
 }
 
-input[type="file"]::after {
+.pdf-selector::after {
   top: 9px;
 }
 
-
-input[type="file"] {
+.pdf-selector {
   position: relative;
   margin-top: 10px;
 }
 
-input[type="file"]::file-selector-button {
+.pdf-selector::file-selector-button {
   width: 8.5rem;
   color: transparent;
 }
 
-input[type="file"]::before {
+.pdf-selector::before {
   position: absolute;
   pointer-events: none;
   left: 40px;
-  color: #0964b0;
+  color: #177254;
   content: "Upload File";
+  font-weight: bold;
 }
 
-input[type="file"]::after {
+.pdf-selector::after {
   position: absolute;
   pointer-events: none;
   left: 16px;
   height: 20px;
   width: 20px;
   content: "";
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230964B0'%3E%3Cpath d='M18 15v3H6v-3H4v3c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-3h-2zM7 9l1.41 1.41L11 7.83V16h2V7.83l2.59 2.58L17 9l-5-5-5 5z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23008000'%3E%3Cpath d='M18 15v3H6v-3H4v3c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-3h-2zM7 9l1.41 1.41L11 7.83V16h2V7.83l2.59 2.58L17 9l-5-5-5 5z'/%3E%3C/svg%3E");
 }
 
-input[type="file"]::file-selector-button {
+.pdf-selector::file-selector-button {
   border-radius: 2rem;
   padding: 0 16px;
   height: 40px;
@@ -365,25 +320,28 @@ input[type="file"]::file-selector-button {
   transition: background-color 200ms;
 }
 
-input[type="file"]::file-selector-button:hover {
+.pdf-selector::file-selector-button:hover {
   background-color: #f3f4f6;
 }
 
-input[type="file"]::file-selector-button:active {
+.pdf-selector::file-selector-button:active {
   background-color: #e5e7eb;
-  border: 2px solid #0964b0;
+  border: 2px solid #177254;
 }
-form span {
+#pdfForm span {
   font-size: 20px;
   font-weight: bold;
   margin-top: 10px;
+}
+#pdfForm h2 {
+  margin-top: 0px;
 }
 .selectPdf>.old-pdf-name,.selectPdf>.new-pdf-name{
   font-size: 12px;
   margin-top: 10px;
   font-weight: 400;
 }
-form button {
+#pdfForm button {
   height: 40px;
   color: white;
   background-color: white;
@@ -391,16 +349,16 @@ form button {
   cursor: pointer;
   border-radius: 2rem;
   width: 8.5rem;
-  background: #0964b0;
+  background: #177254;
   margin-top: 10px;
   font-size: 17px;
   font-weight: 700;
 }
 
-form button:active,.result button:active {
-  background:white;
-  color: #0964b0;
-  border: 2px solid #0964b0;
+#pdfForm button:active,.result button:active {
+  background:#27916d;
+  color: white;
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
 
 }
 .result button{
@@ -410,23 +368,29 @@ form button:active,.result button:active {
   border: 1px solid rgba(0, 0, 0, 0.16);
   cursor: pointer;
   border-radius: 2rem;
-  background: #0964b0;
+  background: #177254;
   margin-top: 10px;
   font-size: 13px;
   font-weight: 500;
   padding-left: 1em;
   padding-right: 1em;
 }
+#pdfForm button:hover{
+  background-color:#1e7659;
+}
 .pdf-wrapper{
   width: 15rem;
   height: 19.4114rem;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .remove-pdf{
   position: absolute;
-  height: 40px;
-  width: 40px;
-  background-color: rgb(255, 52, 52);
+  height: 30px;
+  width: 30px;
+  background-color: #ff8662;
   right: 0;
   top: 0;
   border-bottom-left-radius: 80px;
@@ -438,10 +402,10 @@ form button:active,.result button:active {
   display: none;
 }
 .remove-pdf:hover{
-  background-color: red;
+  background-color: #d97253;
 }
 .remove-pdf>i{
-  font-size: 23px;
-  margin-left: 0.8rem;
-  margin-top: 0.2rem;
+  font-size: 20px;
+  margin-left: 0.6rem;
+  margin-top: 0.18rem;
 }

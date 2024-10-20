@@ -200,7 +200,7 @@ const displayChangeSummary = () => {
         let getAddedCount = record.added.split(/\s+/).map(word => word.replace(/[.,!?]/g, '')).filter(word => word.length > 0).length;
         const changeSummary = `
             <div id="${record.title === "Added" ? "added_"+""+record.pdf2 : "" +""+ record.title === "Removed" ? "removed_"+""+record.pdf1 : ""}" class="${record.title !== "Added" ? record.pdf1+" "+record.pdf2  : record.title === "Removed" ? "removed" : ""}">
-                <span><b>${record.title}</b></span>
+                <span><b>${record.title === "Added" ? "Inserted" : record.title}</b></span>
                 <span><span>${record.removed || ''}</span><span>${record.removed ? "-"+getRemovedCount : ''}</span></span>
                 <span><span>${record.added || ''}</span><span>${record.added ? "+"+getAddedCount : ''}</span></span>
             </div>`;

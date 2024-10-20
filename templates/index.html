@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
 </head>
 
 <body>
@@ -34,7 +35,7 @@
                         <div id="remove-old-pdf" class="remove-pdf"><i class="fa fa-close"></i></div>
                     </div>
                     <span class="old-pdf-name" class="pdfName">No file chosen</span>
-                    <input type="file" id="old-pdf-selector" name="pdf1" accept=".pdf" required>
+                    <input type="file" class="pdf-selector" id="old-pdf-selector" name="pdf1" accept=".pdf" required>
                 </div>
                 <img src="https://icons.veryicon.com/png/o/business/e-commerce-vector-icon-set/compare-12.png"
                     alt="icon" />
@@ -45,7 +46,7 @@
                     <div id="remove-new-pdf" class="remove-pdf"><i class="fa fa-close"></i></div>
                     </div>
                     <span class="new-pdf-name" class="pdfName">No file chosen</span>
-                    <input type="file" id="new-pdf-selector" name="pdf2" accept=".pdf" required>
+                    <input type="file" class="pdf-selector" id="new-pdf-selector" name="pdf2" accept=".pdf" required>
                 </div>
             </div>
             <button type="submit">Compare</button>
